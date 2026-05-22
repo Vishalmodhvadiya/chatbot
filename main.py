@@ -2,7 +2,8 @@ from sys import exception
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from google.genai.errors import ClientError
-from app.services.gemini_service import get_gemini_response
+from requests import Session
+from app.services.gemini_service import get_all_sessions, get_gemini_response, delete_session
 from pydantic import BaseModel 
 
 app = FastAPI()
@@ -20,7 +21,7 @@ class ChatRequest(BaseModel):
 async def chat(request: ChatRequest):
     try:
         reply = await get_gemini_response(request.message, request.session_id)
-        return {"reply": reply}
+        return {"reply": reply, "session_id": request.session_id}
     except ClientError as exc:
         raise HTTPException(
             status_code=502,
@@ -35,6 +36,7 @@ async def chat(request: ChatRequest):
 @app.delete("/chat/{session_id}")
 async def delete_session(session_id: str):
     try :  
+        delete_session(session_id)
         return {"message": f"session{session_id} deleted successfully"}
     except Exception as exc:
         raise HTTPException(
@@ -44,4 +46,4 @@ async def delete_session(session_id: str):
     
 @app.get("/chat")
 async def root():
-    return 
+ return {"sessions": get_all_sessions()}
