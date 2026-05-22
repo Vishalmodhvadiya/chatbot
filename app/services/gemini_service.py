@@ -23,7 +23,7 @@ async def get_gemini_response(message: str, session_id: str) -> str:
 
     # Call Gemini with full conversation history
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-2.0-flash-lite",
         contents=sessions[session_id]
     )
 
