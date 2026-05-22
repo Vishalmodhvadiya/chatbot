@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from google.genai.errors import ClientError
 from app.services.gemini_service import get_gemini_response
 from pydantic import BaseModel 
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -12,12 +13,13 @@ app.add_middleware(
 )
 class ChatRequest(BaseModel):
     message: str
+    session_id: str
 
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
     try:
-        reply = await get_gemini_response(request.message)
+        reply = await get_gemini_response(request.message, request.session_id)
         return {"reply": reply}
     except ClientError as exc:
         raise HTTPException(
