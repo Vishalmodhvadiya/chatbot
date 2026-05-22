@@ -45,5 +45,8 @@ def delete_session(session_id: str) -> bool:
     return False
 
 
-def get_all_sessions() -> list[str]:
-    return list(sessions.keys())
+def get_all_sessions_with_messages() -> dict:
+    return {
+        session_id: messages
+        for session_id, messages in sessions.items()
+    }
