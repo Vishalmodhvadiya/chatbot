@@ -1,11 +1,49 @@
+import os
 from google import genai
-from app.core.config import settings
+from dotenv import load_dotenv
 
-client = genai.Client(api_key=settings.GEMINI_API_KEY)
+load_dotenv()
 
-async def get_gemini_response(user_message: str, session_id: str) -> str:
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+# In-memory session store: { session_id: [messages] }
+sessions: dict[str, list] = {}
+
+
+async def get_gemini_response(message: str, session_id: str) -> str:
+    # Initialize session if new
+    if session_id not in sessions:
+        sessions[session_id] = []
+
+    # Add user message to history
+    sessions[session_id].append({
+        "role": "user",
+        "parts": [{"text": message}]
+    })
+
+    # Call Gemini with full conversation history
     response = client.models.generate_content(
-        model="models/gemini-2.5-flash",
-        contents=user_message
+        model="gemini-2.0-flash",
+        contents=sessions[session_id]
     )
-    return response.text
+
+    reply = response.text
+
+    # Save assistant reply to history
+    sessions[session_id].append({
+        "role": "model",
+        "parts": [{"text": reply}]
+    })
+
+    return reply
+
+
+def delete_session(session_id: str) -> bool:
+    if session_id in sessions:
+        del sessions[session_id]
+        return True
+    return False
+
+
+def get_all_sessions() -> list[str]:
+    return list(sessions.keys())
