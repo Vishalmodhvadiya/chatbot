@@ -36,12 +36,12 @@ async def chat(request: ChatRequest):
 @app.delete("/chat/{session_id}")
 async def delete_chat_session(session_id: str):
     try :  
-        deleted = delete_session(session_id)  # ← use renamed import
+        deleted = delete_session(session_id)  
         if not deleted:
             raise HTTPException(status_code=404, detail=f"Session '{session_id}' not found")
         return {"message": f"session{session_id} deleted successfully"}
     except HTTPException:
-        raise  # ← re-raise 404 properly
+        raise  
     except Exception as exc:
         raise HTTPException(status_code=500, detail="Internal server error") from exc
     
