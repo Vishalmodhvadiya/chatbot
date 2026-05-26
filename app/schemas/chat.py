@@ -12,4 +12,4 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
     session_id: str
-    history: List[Message] = []
+    history: List[Message] = []                                                                   
