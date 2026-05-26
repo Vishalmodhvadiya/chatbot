@@ -28,11 +28,13 @@ async def chat(request: ChatRequest):
             detail=f"Gemini API error: {exc}"
         ) from exc
     except Exception as exc:
-        raise HTTPException(
-            status_code=500,
-            detail="Internal server error"
-        ) from exc
-
+     print("ERROR:", exc)
+    
+     raise HTTPException(
+        status_code=500,
+        detail=str(exc)
+    ) from exc
+    
 @app.delete("/chat/{session_id}")
 async def delete_chat_session(session_id: str):
     try :  
