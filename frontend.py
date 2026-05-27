@@ -1,3 +1,4 @@
+from click import style
 import streamlit as st
 import requests
 import uuid
@@ -6,6 +7,54 @@ st.set_page_config(
     page_title="Chatbot",
     layout="wide"
 )
+
+st.markdown("""
+<style>
+[data-testid="stSidebar"] {
+    background-color: #111111;
+    border-right: 1px solid #333333;
+}
+[data-testid="stSidebar"] button {
+    width: 100%;
+    background-color: transparent;
+    color: #ececec;
+    border-radius: 8px;
+    border: none;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    text-align: left;
+    font-size: 14px;
+}
+
+[data-testid="stSidebar"] button:hover {
+    background-color: #4da6ff;
+    color: white;
+    border: 1px solid #4da6ff;
+}
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]){
+            background-color: #1a3a5c;
+            border-radius: 12px;
+            color: white;
+            padding: 10px;
+            }
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]){
+            background-color: #1e1e2e;
+            border-radius: 12px;
+            color: white;
+            padding: 10px;
+            }
+[data-testid="stChatInput"] {
+    background-color: #1e1e1e;
+    border: 2px solid #1a3a5c;
+    border-radius: 12px;
+    color: white;
+}
+h1 {
+    color: #4da6ff;
+}
+</style>
+           """, unsafe_allow_html=True)
+
 
 st.title("chatbot")
 
@@ -42,9 +91,9 @@ st.write("current chat")
 for msg in messages:
 
     if msg["role"] == "user":
-        st.write(f"<span style='background-color: black; color: white'> you: {msg['content']}</span>",unsafe_allow_html=True)
+        st.write(f"{msg['content']}")
     else:
-        st.write(f"<span style='background-color: black; color: white'> bot: {msg['content']}</span>",unsafe_allow_html=True,)
+        st.write(f"{msg['content']}")
 
 text = st.chat_input("type your message here")
 
@@ -56,7 +105,7 @@ if text:
     })
 
     with st.chat_message("user"):
-        st.write(f"<span style='background-color: black; color: white'> you: {text}</span>",unsafe_allow_html=True)
+        st.write(f"{text}")
 
     data = {
         "message": text,
@@ -80,7 +129,7 @@ if text:
             })
 
             with st.chat_message("assistant"):
-                st.write(f"<span style='background-color: black; color: white'> bot: {response_data['reply']}</span>",unsafe_allow_html=True)
+                st.write(f"{response_data['reply']}")
 
         else:
             st.error(
