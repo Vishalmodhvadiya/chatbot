@@ -13,27 +13,17 @@ if "chats" not in st.session_state:
     st.session_state.chats = {}
 
 if "session_id" not in st.session_state:
-
     session_id = str(uuid.uuid4())
-
     st.session_state.session_id = session_id
-
     st.session_state.chats[session_id] = []
 
 
 with st.sidebar:
-
     st.title("Chats")
-
     if st.button("New Chat"):
-
         session_id = str(uuid.uuid4())
-
         st.session_state.session_id = session_id
-
         st.session_state.chats[session_id] = []
-
-    st.divider()
 
     for chat_id, messages in st.session_state.chats.items():
 
@@ -52,9 +42,9 @@ st.write("current chat")
 for msg in messages:
 
     if msg["role"] == "user":
-        st.write(f"<span style='color: purple'> you: {msg['content']}</span>",unsafe_allow_html=True)
+        st.write(f"<span style='background-color: black; color: white'> you: {msg['content']}</span>",unsafe_allow_html=True)
     else:
-        st.write(f"<span style='color: green'>bot: {msg['content']}</span>",unsafe_allow_html=True,)
+        st.write(f"<span style='background-color: black; color: white'> bot: {msg['content']}</span>",unsafe_allow_html=True,)
 
 text = st.chat_input("type your message here")
 
@@ -66,7 +56,7 @@ if text:
     })
 
     with st.chat_message("user"):
-        st.write(text)
+        st.write(f"<span style='background-color: black; color: white'> you: {text}</span>",unsafe_allow_html=True)
 
     data = {
         "message": text,
@@ -90,7 +80,7 @@ if text:
             })
 
             with st.chat_message("assistant"):
-                st.write(response_data["reply"])
+                st.write(f"<span style='background-color: black; color: white'> bot: {response_data['reply']}</span>",unsafe_allow_html=True)
 
         else:
             st.error(
