@@ -1,4 +1,3 @@
-from click import style
 import streamlit as st
 import requests
 import uuid
@@ -22,22 +21,24 @@ st.markdown("""
     border: none;
     padding: 10px 12px;
     margin-bottom: 4px;
-    text-align: left;
     font-size: 14px;
 }
-
 [data-testid="stSidebar"] button:hover {
     background-color: #4da6ff;
     color: white;
     border: 1px solid #4da6ff;
 }
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]){
+[data-testid="stChatMessage"] {
+    border-radius: 12px;
+    padding: 10px;
+}
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]){
             background-color: #1a3a5c;
             border-radius: 12px;
             color: white;
             padding: 10px;
             }
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]){
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]){
             background-color: #1e1e2e;
             border-radius: 12px;
             color: white;
@@ -54,7 +55,6 @@ h1 {
 }
 </style>
            """, unsafe_allow_html=True)
-
 
 st.title("chatbot")
 
@@ -89,11 +89,9 @@ messages = st.session_state.chats[st.session_state.session_id]
 st.write("current chat")
 
 for msg in messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
 
-    if msg["role"] == "user":
-        st.write(f"{msg['content']}")
-    else:
-        st.write(f"{msg['content']}")
 
 text = st.chat_input("type your message here")
 
