@@ -14,14 +14,6 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str
 
-@app.get("/")
-async def home():
-    return {"message": "API is running"}
-
-@app.get("/test")
-async def test():
-    return {"status": "ok"}
-
 @app.post("/chat")
 async def chat(request: ChatRequest):
     try:
