@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-google-generativeai
+groq
 pydantic-settings
 python-dotenv
-google-genai
