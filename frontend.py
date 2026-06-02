@@ -113,7 +113,7 @@ if text:
     try:
 
         response = requests.post(
-            "http://localhost:8000/chat",
+            "https://chatbot-k8or.onrender.com/chat",
             json=data
         )
 
