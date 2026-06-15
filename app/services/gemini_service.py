@@ -4,6 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+print("GROQ_API_KEY exists:", bool(os.getenv("GROQ_API_KEY")))
+print("First chars:", os.getenv("GROQ_API_KEY", "")[:8])
+
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # In-memory session store: { session_id: [messages] }
